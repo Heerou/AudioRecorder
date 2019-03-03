@@ -15,15 +15,15 @@
 
     <Button
         android:id="@+id/btnStartRecord"
-        android:text="Start Record!"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Start Record!" />
 
     <Button
         android:id="@+id/btnStopRecord"
-        android:text="Stop Record!"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Stop Record!" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,14 +33,14 @@
 
     <Button
         android:id="@+id/btnStartPlay"
-        android:text="Start Play!"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Start Play!" />
 
     <Button
         android:id="@+id/btnStopPlay"
-        android:text="Stop Play!"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Stop Play!" />
 
 </LinearLayout>

@@ -1,8 +1,6 @@
 package com.heerou.audiorecorder;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -35,36 +33,44 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(!checkPermissionFromDevice())
+            requestPermission();
+
         //Init view
         btnStartRecord = findViewById(R.id.btnStartRecord);
         btnStopRecord = findViewById(R.id.btnStopRecord);
         btnStartPlay = findViewById(R.id.btnStartPlay);
         btnStopPlay = findViewById(R.id.btnStopPlay);
 
-        //Requesting Permission
-        if (checkPermissionFromDevice())
-        {
-            btnStopRecord.setOnClickListener(new View.OnClickListener()
+            btnStartRecord.setOnClickListener(new View.OnClickListener()
             {
                 @Override
-                public void onClick(View v)
+                public void onClick (View v)
                 {
-                    pathToSave = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"
-                    + UUID.randomUUID().toString()+"_audio_record.3gp";
-                    setUpMediaRecorder();
-                    try
+                    if(checkPermissionFromDevice())
                     {
-                        mediaRecorder.prepare();
-                        mediaRecorder.start();
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
+                        pathToSave = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
+                                + UUID.randomUUID().toString() + "_audio_record.3gp";
+                        setUpMediaRecorder();
+                        try
+                        {
+                            mediaRecorder.prepare();
+                            mediaRecorder.start();
+                        } catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                        btnStopRecord.setEnabled(true);
+                        btnStartPlay.setEnabled(false);
+                        btnStopPlay.setEnabled(false);
+
+                        Toast.makeText(MainActivity.this, "Recording the Audio...", Toast.LENGTH_SHORT).show();
                     }
-
-                    btnStartPlay.setEnabled(false);
-                    btnStopPlay.setEnabled(false);
-
-                    Toast.makeText(MainActivity.this, "Recording the Audio...", Toast.LENGTH_SHORT).show();
+                    else
+                    {
+                        requestPermission();
+                    }
                 }
             });
 
@@ -100,6 +106,7 @@ public class MainActivity extends AppCompatActivity
                         e.printStackTrace();
                     }
 
+                    mediaPlayer.start();
                     Toast.makeText(MainActivity.this, "Playing the Audio...", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -122,11 +129,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
             });
-        }
-        else 
-        {
-            requestPermissionGranted();
-        }
     }
 
     private void setUpMediaRecorder()
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity
         mediaRecorder.setOutputFile(pathToSave);
     }
 
-    private void requestPermissionGranted()
+    private void requestPermission()
     {
         ActivityCompat.requestPermissions(this, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
